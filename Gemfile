@@ -1,12 +1,11 @@
 source 'http://rubygems.org'
 
-platforms :jruby do
-  gem 'jruby-openssl', '~> 0.7'
-end
+gemspec
 
-gemspec :path => 'oa-basic'
-gemspec :path => 'oa-core'
-gemspec :path => 'oa-enterprise'
-gemspec :path => 'oa-more'
-gemspec :path => 'oa-oauth'
-gemspec :path => 'oa-openid'
+group :development do
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-bundler'
+  gem 'growl'
+  gem 'rb-fsevent'
+end

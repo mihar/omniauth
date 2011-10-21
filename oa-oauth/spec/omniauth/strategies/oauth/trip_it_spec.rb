@@ -1,5 +1,0 @@
-require 'helper'
-
-describe OmniAuth::Strategies::TripIt do
-  it_should_behave_like 'an oauth strategy'
-end

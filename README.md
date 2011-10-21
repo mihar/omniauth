@@ -1,140 +1,139 @@
-OmniAuth: Standardized Multi-Provider Authentication
-====================================================
-OmniAuth is a new Rack-based authentication system for multi-provider external
-authentcation. OmniAuth is built from the ground up on the philosophy that
-**authentication is not the same as identity**, and is based on two
-observations:
+# OmniAuth: Standardized Multi-Provider Authentication
 
-1. The traditional 'sign up using a login and password' model is becoming the
-   exception, not the rule. Modern web applications offer external
-   authentication via OpenID, Facebook, and/or OAuth.
-2. The interconnectable web is no longer a dream, it is a necessity. It is not
-   unreasonable to expect that one application may need to be able to connect
-   to one, three, or twelve other services. Modern authentication systems
-   should allow a user's identity to be associated with many authentications.
+**NOTICE:** This documentation and code is for OmniAuth 1.0 in which
+each provider will become its own separate gem. If you're looking for
+the current released version, please visit [OmniAuth 0.3 Stable
+Branch](https://github.com/intridea/omniauth/tree/0-3-stable).
 
-Installation
-------------
-To install OmniAuth, simply install the gem:
+## An Introduction
 
-    gem install omniauth
+OmniAuth is a libary that standardizes multi-provider authentication for
+web applications. It was created to be powerful, flexible, and do as
+little as possible. Any developer can create **strategies** for OmniAuth
+that can authenticate users via disparate systems. OmniAuth strategies
+have been created for everything from Facebook to LDAP.
 
-Continuous Integration
-----------------------
-[![Build Status](http://travis-ci.org/intridea/omniauth.png)](http://travis-ci.org/intridea/omniauth)
+In order to use OmniAuth in your applications, you will need to leverage
+one or more strategies. These strategies are generally released
+individually as RubyGems, and you can see a [community maintained list](https://github.com/intridea/omniauth/wiki/List-of-Strategies) 
+on the wiki for this project.
 
-Providers
----------
-OmniAuth currently supports the following external providers:
+One strategy, called `Developer`, is included with OmniAuth and provides
+a completely unsecure, non-production-usable strategy that directly
+prompts a user for authentication information and then passes it
+straight through. You can use it as a placeholder when you start
+development and easily swap in other strategies later.
 
-* via OAuth (OAuth 1.0, OAuth 2, and xAuth)
-  * 37signals ID (credit: [mbleigh](https://github.com/mbleigh))
-  * Bit.ly (credit: [philnash](https://github.com/philnash))
-  * Blogger (credit: [dsueiro-backing](https://github.com/dsueiro-backing))
-  * DailyMile (credit: [cdmwebs](https://github.com/cdmwebs))
-  * Doit.im (credit: [chouti](https://github.com/chouti))
-  * Dopplr (credit: [flextrip](https://github.com/flextrip))
-  * Douban (credit: [quake](https://github.com/quake))
-  * Evernote (credit: [szimek](https://github.com/szimek))
-  * Facebook (credit: [mbleigh](https://github.com/mbleigh))
-  * Foursquare (credit: [mbleigh](https://github.com/mbleigh))
-  * GitHub (credit: [mbleigh](https://github.com/mbleigh))
-  * Glitch (credit: [harrylove](https://github.com/harrylove))
-  * GoodReads (credit: [cristoffer](https://github.com/christoffer))
-  * Google Health (credit: [jaigouk](https://github.com/jaigouk))
-  * Gowalla (credit: [kvnsmth](https://github.com/kvnsmth))
-  * Hyves (credit: [mrdg](https://github.com/mrdg))
-  * Identi.ca (credit: [dcu](https://github.com/dcu))
-  * Instagram (credit: [kiyoshi](https://github.com/kiyoshi))
-  * Instapaper (credit: [micpringle](https://github.com/micpringle))
-  * LinkedIn (credit: [mbleigh](https://github.com/mbleigh))
-  * Mailru (credit: [lexer](https://github.com/lexer))
-  * Meetup (credit [coderoshi](https://github.com/coderoshi))
-  * Miso (credit: [rickenharp](https://github.com/rickenharp))
-  * Mixi (credit: [kiyoshi](https://github.com/kiyoshi))
-  * Netflix (credit: [caged](https://github.com/caged))
-  * Plurk (credit: [albb0920](http://github.com/albb0920))
-  * Qzone (credit: [quake](https://github.com/quake))
-  * Rdio (via [brandonweiss](https://github.com/brandonweiss))
-  * Renren (credit: [quake](https://github.com/quake))
-  * Salesforce (via [CloudSpokes](http://www.cloudspokes.com))
-  * SmugMug (credit: [pchilton](https://github.com/pchilton))
-  * SoundCloud (credit: [leemartin](https://github.com/leemartin))
-  * T163 (credit: [quake](https://github.com/quake))
-  * Taobao (credit: [l4u](https://github.com/l4u))
-  * TeamBox (credit [jrom](https://github.com/jrom))
-  * Tqq (credit: [quake](https://github.com/quake))
-  * TradeMe (credit: [pchilton](https://github.com/pchilton))
-  * TripIt (credit: [flextrip](https://github.com/flextrip))
-  * Tsina (credit: [quake](https://github.com/quake))
-  * Tsohu (credit: [quake](https://github.com/quake))
-  * Tumblr (credit: [jamiew](https://github.com/jamiew))
-  * Twitter (credit: [mbleigh](https://github.com/mbleigh))
-  * Vimeo (credit: [jamiew](https://github.com/jamiew))
-  * Vkontakte (credit: [german](https://github.com/german))
-  * WePay (credit: [ryanwood](https://github.com/ryanwood))
-  * Yammer (credit: [kltcalamay](https://github.com/kltcalamay))
-  * YouTube (credit: [jamiew](https://github.com/jamiew))
-* CAS (Central Authentication Service) (credit: [jamesarosen](https://github.com/jamesarosen))
-* Flickr (credit: [pchilton](https://github.com/pchilton))
-* Google Apps (via OpenID) (credit: [mbleigh](https://github.com/mbleigh))
-* LDAP (credit: [pyu10055](https://github.com/pyu10055))
-* OpenID (credit: [mbleigh](https://github.com/mbleigh))
-* Yupoo (credit: [chouti](https://github.com/chouti))
+## Getting Started
 
-Compatibility
--------------
-OmniAuth is tested against the following Ruby versions:
+Each OmniAuth strategy is a Rack Middleware. That means that you can use
+it the same way that you use any other Rack middleware. For example, to
+use the built-in Developer strategy in a Sinatra application I might do
+this:
 
-* 1.8.7
-* 1.9.1
-* 1.9.2
-* JRuby (note, the Evernote strategy is not available for JRuby)
-* Rubinius
-* REE
+    require 'sinatra'
+    require 'omniauth'
 
-Usage
------
-OmniAuth is a collection of Rack middleware. To use a single strategy, you simply need to add the middleware:
-
-    require 'oa-oauth'
-    use OmniAuth::Strategies::Twitter, 'CONSUMER_KEY', 'CONSUMER_SECRET'
-
-Now to initiate authentication you merely need to redirect the user to `/auth/twitter` via a link or other means. Once the user has authenticated to Twitter, they will be redirected to `/auth/twitter/callback`. You should build an endpoint that handles this URL, at which point you will will have access to the authentication information through the `omniauth.auth` parameter of the Rack environment. For example, in Sinatra you would do something like this:
-
-    get '/auth/twitter/callback' do
-      auth_hash = request.env['omniauth.auth']
+    class MyApplication < Sinatra::Base
+      use Rack::Session
+      use OmniAuth::Strategies::Developer
     end
 
-The hash in question will look something like this:
+Because OmniAuth is built for *multi-provider* authentication, I may
+want to leave room to run multiple strategies. For this, the built-in
+`OmniAuth::Builder` class gives you an easy way to specify multiple
+strategies. Note that there is **no difference** between the following
+code and using each strategy individually as middleware. This is an
+example that you might put into a Rails initializer at
+`config/initializers/omniauth.rb`:
 
-    {
-      'uid' => '12356',
-      'provider' => 'twitter',
-      'user_info' => {
-        'name' => 'User Name',
-        'nickname' => 'username',
-        # ...
-      }
-    }
+    Rails.application.config.middleware.use OmniAuth::Builder do
+      provider :developer unless Rails.env.production?
+      provider :twitter, ENV['TWITTER_KEY'], ENV['TWITTER_SECRET']
+    end
 
-The `user_info` hash will automatically be populated with as much information about the user as OmniAuth was able to pull from the given API or authentication provider.
+You should look to the documentation for each provider you use for
+specific initialization requirements.
 
-Resources
----------
-The best place to find more information is the [OmniAuth Wiki](https://github.com/intridea/omniauth/wiki). Some specific information you might be interested in:
+## Integrating OmniAuth Into Your Application
 
-* [CI Build Status](http://travis-ci.org/#!/intridea/omniauth)
-* [Roadmap](https://github.com/intridea/omniauth/wiki/Roadmap)
-* [Changelog](https://github.com/intridea/omniauth/wiki/Changelog)
-* [Report Issues](https://github.com/intridea/omniauth/issues)
-* [Mailing List](http://groups.google.com/group/omniauth)
+OmniAuth is an extremely low-touch library. It is designed to be a
+black box that you can send your application's users into when you need
+authentication and then get information back. OmniAuth was intentionally
+built not to automatically associate with a User model or make
+assumptions about how many authentication methods you might want to use
+or what you might want to do with the data once a user has
+authenticated. This makes OmniAuth incredibly flexible. To use OmniAuth,
+you need only to redirect users to `/auth/:provider`, where `:provider`
+is the name of the strategy (for example, `developer` or `twitter`).
+From there, OmniAuth will take over and take the user through the
+necessary steps to authenticate them with the chosen strategy.
 
-OmniAuth Core
--------------
-* **Michael Bleigh** ([mbleigh](https://github.com/mbleigh))
-* **Erik Michaels-Ober** ([sferik](https://github.com/sferik))
+Once the user has authenticated, what do you do next? OmniAuth simply
+sets a special hash called the Authentication Hash on the Rack
+environment of a request to `/auth/:provider/callback`. This hash
+contains as much information about the user as OmniAuth was able to
+glean from the utilized strategy. You should set up an endpoint in your
+application that matches to the callback URL and then performs whatever
+steps are necessary for your application. For example, in a Rails app I
+would add a line in my `routes.rb` file like this:
 
-License
--------
-OmniAuth is licensed under the MIT License.
+    match '/auth/:provider/callback', to: 'sessions#create'
+
+And I might then have a `SessionsController` with code that looks
+something like this:
+
+    class SessionsController < ApplicationController
+      def create
+        @user = User.find_or_create_from_auth_hash(auth_hash)
+        self.current_user = @user
+        redirect_to '/'
+      end
+
+      protected
+
+      def auth_hash
+        request.env['omniauth.auth']
+      end
+    end
+
+The `omniauth.auth` key in the environment hash gives me my
+Authentication Hash which will contain information about the just
+authenticated user including a unique id, the strategy they just used
+for authentication, and personal details such as name and email address
+as available. For an in-depth description of what the authentication
+hash might contain, see the [Auth Hash Schema wiki page](https://github.com/intridea/omniauth/wiki/Auth-Hash-Schema).
+
+Note that OmniAuth does not perform any actions beyond setting some
+environment information on the callback request. It is entirely up to
+you how you want to implement the particulars of your application's
+authentication flow.
+
+## Resources
+
+The [OmniAuth Wiki](https://github.com/intridea/omniauth/wiki) has
+actively maintained in-depth documentation for OmniAuth. It should be
+your first stop if you are wondering about a more in-depth look at
+OmniAuth, how it works, and how to use it.
+
+## License
+
+Copyright (c) 2011 Intridea, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a 
+copy of this software and associated documentation files (the "Software"), 
+to deal in the Software without restriction, including without limitation 
+the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+and/or sell copies of the Software, and to permit persons to whom the 
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included 
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
